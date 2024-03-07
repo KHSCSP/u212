@@ -8,38 +8,38 @@ from random import randrange
 
 def rabinMiller(n, k=10):
     if n == 2:
-            return True
+        return True
     if not n & 1:
-            return False
+        return False
 
     def check(a, s, d, n):
-            x = pow(a, d, n)
-            if x == 1:
-                    return True
-            for i in range(1, s - 1):
-                    if x == n - 1:
-                            return True
-                    x = pow(x, 2, n)
-            return x == n - 1
+        x = pow(a, d, n)
+        if x == 1:
+            return True
+        for i in range(1, s - 1):
+            if x == n - 1:
+                return True
+            x = pow(x, 2, n)
+        return x == n - 1
 
     s = 0
     d = n - 1
 
     while d % 2 == 0:
-            d >>= 1
-            s += 1
+        d >>= 1
+        s += 1
 
     for i in range(1, k):
-            a = randrange(2, n - 1)
-            if not check(a, s, d, n):
-                    return False
+        a = randrange(2, n - 1)
+        if not check(a, s, d, n):
+            return False
     return True
 
 def isPrime(n):
-     #lowPrimes is all primes (sans 2, which is covered by the bitwise and operator)
-     #under 1000. taking n modulo each lowPrime allows us to remove a huge chunk
-     #of composite numbers from our potential pool without resorting to Rabin-Miller
-     lowPrimes =   [3,5,7,11,13,17,19,23,29,31,37,41,43,47,53,59,61,67,71,73,79,83,89,97
+    #lowPrimes is all primes (sans 2, which is covered by the bitwise and operator)
+    #under 1000. taking n modulo each lowPrime allows us to remove a huge chunk
+    #of composite numbers from our potential pool without resorting to Rabin-Miller
+    lowPrimes =   [3,5,7,11,13,17,19,23,29,31,37,41,43,47,53,59,61,67,71,73,79,83,89,97
                    ,101,103,107,109,113,127,131,137,139,149,151,157,163,167,173,179
                    ,181,191,193,197,199,211,223,227,229,233,239,241,251,257,263,269
                    ,271,277,281,283,293,307,311,313,317,331,337,347,349,353,359,367
@@ -49,30 +49,30 @@ def isPrime(n):
                    ,673,677,683,691,701,709,719,727,733,739,743,751,757,761,769,773
                    ,787,797,809,811,821,823,827,829,839,853,857,859,863,877,881,883
                    ,887,907,911,919,929,937,941,947,953,967,971,977,983,991,997]
-     if (n >= 3):
-         if (n&1 != 0):
-             for p in lowPrimes:
-                 if (n == p):
+    if (n >= 3):
+        if (n&1 != 0):
+            for p in lowPrimes:
+                if (n == p):
                     return True
-                 if (n % p == 0):
-                     return False
-             return rabinMiller(n)
-     return False
+                if (n % p == 0):
+                    return False
+            return rabinMiller(n)
+    return False
 
 def generateLargePrime(k):
-     #k is the desired bit length
-     r = 100*(math.log(k,2)+1) #number of attempts max
-     r_ = r
-     while r>0:
+    #k is the desired bit length
+    r = 100*(math.log(k,2)+1) #number of attempts max
+    r_ = r
+    while r>0:
         #randrange is mersenne twister and is completely deterministic
         #unusable for serious crypto purposes
-         n = random.randrange(2**(k-1),2**(k))
-         r -= 1
-         if isPrime(n) == True:
-             return n
+        n = random.randrange(2**(k-1),2**(k))
+        r -= 1
+        if isPrime(n) == True:
+            return n
 
-     str_failure = "Failure after" + str(r_) + "tries."
-     return str_failure
+    str_failure = "Failure after" + str(r_) + "tries."
+    return str_failure
 
 
 def gcd(a, b):
@@ -183,13 +183,13 @@ def encrypt(key, n,  plaintext):
 def decrypt(key, n, ciphertext):
     #Generate the plaintext based on the ciphertext and key using a^b mod m
  
-  plain = [chr((int(char) ** key) % n) for char in ciphertext]
+    plain = [chr((int(char) ** key) % n) for char in ciphertext]
     #Return the array of bytes as a string
-  return ''.join(plain)
+    return ''.join(plain)
 
 def print_formatted_message(msg):
-  print(''.join(map(lambda x: str(x), msg)))
-  return
+    print(''.join(map(lambda x: str(x), msg)))
+    return
 
 if __name__ == '__main__':
     '''
